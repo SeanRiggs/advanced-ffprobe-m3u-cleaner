@@ -1,0 +1,13 @@
+version: '3.8'
+
+services:
+  advanced-ffprobe-m3u-cleaner:
+    image: seanriggs/advanced-ffprobe-m3u-cleaner:latest
+    volumes:
+      - ${PWD}/m3u:/app/m3u
+      - ${PWD}/output:/app/output
+      - ${PWD}/logs:/var/log
+    environment:
+      M3U_DIRECTORY: /app/m3u
+      OUTPUT_FILE: /app/output/cleaned_playlist.m3u
+      LOG_FILE: /var/log/validator.log

@@ -1,0 +1,29 @@
+# Ignore composer dependencies
+/vendor/
+
+# Ignore user-specific M3U files
+/m3u/*
+!/m3u/sample.m3u
+
+# Ignore generated output files
+/output/*
+!/output/.gitkeep
+
+# Ignore log files
+/logs/*
+!/logs/.gitkeep
+
+# Ignore PHP-CS-Fixer cache
+.php_cs.cache
+
+# Ignore PHPUnit result cache
+.phpunit.result.cache
+
+# Ignore macOS system files
+.DS_Store
+
+# Ignore PHP Storm project files
+.idea/
+
+# Ignore Visual Studio Code settings
+.vscode/

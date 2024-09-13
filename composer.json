@@ -1,0 +1,7 @@
+{
+    "require": {
+      "gemorroj/m3u-parser": "5.5.0",
+      "php-ffmpeg/php-ffmpeg": "^1.0"
+    }
+  }
+  
