@@ -27,3 +27,8 @@
 
 # Ignore Visual Studio Code settings
 .vscode/
+
+# Private config and local test files
+.env
+__pycache__/
+*.pyc
