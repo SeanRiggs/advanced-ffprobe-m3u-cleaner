@@ -1,14 +1,15 @@
-version: '3.8'
-
 services:
   advanced-ffprobe-m3u-cleaner:
+    image: advanced-ffprobe-m3u-cleaner:dev
     build: .
+    user: "${PUID:-1000}:${PGID:-1000}"
     volumes:
-      - ${PWD}/m3u:/app/m3u
-      - ${PWD}/output:/app/output
-      - ${PWD}/logs:/var/log
+      - ./m3u:/app/m3u:ro
+      - ./output:/app/output
+      - ./logs:/var/log
+      - ./validator.php:/app/validator.php:ro
     environment:
       M3U_DIRECTORY: /app/m3u
       OUTPUT_FILE: /app/output/cleaned_playlist.m3u
       LOG_FILE: /var/log/validator.log
-    command: php /app/validator.php
+      PROBE_TIMEOUT_SECONDS: ${PROBE_TIMEOUT_SECONDS:-15}

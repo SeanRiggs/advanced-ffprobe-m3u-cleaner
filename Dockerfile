@@ -1,28 +1,20 @@
-FROM php:8.1-cli
+FROM php:8.4-cli-bookworm
 
-# Install necessary dependencies: curl, ffmpeg for ffprobe, and git for composer
-RUN apt-get update && apt-get install -y \
-    curl \
-    ffmpeg \
-    git \
-    && rm -rf /var/lib/apt/lists/*
+RUN apt-get update \
+    && apt-get install -y --no-install-recommends ffmpeg ca-certificates \
+    && rm -rf /var/lib/apt/lists/* \
+    && groupadd --gid 10001 cleaner \
+    && useradd --uid 10001 --gid cleaner --no-create-home cleaner
 
-# Install Composer
-COPY --from=composer:latest /usr/bin/composer /usr/bin/composer
-
-# Set up the working directory
 WORKDIR /app
+COPY validator.php /app/validator.php
+RUN php -l /app/validator.php \
+    && mkdir -p /app/m3u /app/output /var/log \
+    && chown cleaner:cleaner /app/m3u /app/output /var/log
 
-# Copy the current directory into the container
-COPY . /app
-
-# Install PHP dependencies using composer
-RUN composer install
-
-# Create necessary directories and set permissions
-RUN mkdir -p /app/m3u /app/output /var/log \
-    && chown -R www-data:www-data /app /var/log \
-    && chmod -R 755 /app /var/log
-
-# Set the entrypoint to the PHP script
+ENV M3U_DIRECTORY=/app/m3u \
+    OUTPUT_FILE=/app/output/cleaned_playlist.m3u \
+    LOG_FILE=/var/log/validator.log \
+    PROBE_TIMEOUT_SECONDS=15
+USER 10001:10001
 ENTRYPOINT ["php", "/app/validator.php"]
