@@ -62,13 +62,13 @@ jobs:
       - name: Check publishing configuration
         id: registry
         env:
-          DOCKERHUB_TOKEN: ${{ secrets.DOCKERHUB_TOKEN }}
+          DOCKERHUB_TOKEN: ${{ secrets.DOCKERHUB_TOKEN || secrets.FFMPEG }}
         run: |
           if [ -n "$DOCKERHUB_TOKEN" ]; then
             echo 'configured=true' >> "$GITHUB_OUTPUT"
           else
             echo 'configured=false' >> "$GITHUB_OUTPUT"
-            echo 'Images tested successfully; Docker Hub publication was skipped because DOCKERHUB_TOKEN is not configured in this repository.' >> "$GITHUB_STEP_SUMMARY"
+            echo 'Images tested successfully; Docker Hub publication was skipped because neither DOCKERHUB_TOKEN nor FFMPEG is configured as an Actions repository secret.' >> "$GITHUB_STEP_SUMMARY"
           fi
       - uses: actions/download-artifact@v4
         if: steps.registry.outputs.configured == 'true'
@@ -81,7 +81,7 @@ jobs:
         if: steps.registry.outputs.configured == 'true'
         with:
           username: seanriggs
-          password: ${{ secrets.DOCKERHUB_TOKEN }}
+          password: ${{ secrets.DOCKERHUB_TOKEN || secrets.FFMPEG }}
       - name: Publish the exact tested images
         if: steps.registry.outputs.configured == 'true'
         env:

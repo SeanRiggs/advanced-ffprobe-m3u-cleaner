@@ -128,7 +128,7 @@ CLEANER_IMAGE=cleaner-test:local python3 -m unittest discover -s tests -v
 
 The tests use a disposable local HTTP server and generated media, not live third-party playlists. They cover extension discovery, metadata, duplicates, redirects, HLS/audio detection, invalid media, timeouts (including forced termination), literal URL argument handling, redacted logs, missing dependencies, output preservation, locking, and output failures.
 
-CI builds and tests AMD64 and ARM64 on native runners, and ARMv7 using emulation. The publishing job loads and pushes those **same tested image archives**, then assembles `latest` and a commit-specific `sha-<commit>` tag. It does not rebuild different images after testing. Docker Hub publication requires the repository's `DOCKERHUB_TOKEN` Actions secret with write access to `seanriggs/advanced-ffprobe-m3u-cleaner`; missing credentials are explicitly reported as skipped publication.
+CI builds and tests AMD64 and ARM64 on native runners, and ARMv7 using emulation. The publishing job loads and pushes those **same tested image archives**, then assembles `latest` and a commit-specific `sha-<commit>` tag. It does not rebuild different images after testing. Docker Hub publication requires an Actions repository secret named `DOCKERHUB_TOKEN` or `FFMPEG` containing a Docker Hub token with write access to `seanriggs/advanced-ffprobe-m3u-cleaner`. If both are set, `DOCKERHUB_TOKEN` takes precedence. Missing credentials are explicitly reported as skipped publication.
 
 ## Contributing
 
